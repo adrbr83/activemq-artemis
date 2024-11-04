@@ -59,6 +59,13 @@ curl -s -H "Origin:http://localhost" -u "user:password" "https://<host>:<port>/c
 curl -s -H "Origin:http://localhost" -u "user:password" "https://<host>:<port>/console/jolokia/read/org.apache.activemq.artemis:broker=\"<broker-name>\",component=addresses,address=\"<address-name>\",subcomponent=queues,routing-type=\"unycast\",queue=\"queue-name\"/MessageCount" | jq .
 ```
 
+# Remove / Delete Messages
+curl -u "user:password" -X POST "https://<host>:<port>/console/jolokia/exec" -H "Content-Type: application/json" -d '{
+    "type": "EXEC",
+    "mbean": "org.apache.activemq.artemis:broker=\<broker-name>\",component=addresses,address=\"<adress_name>\",subcomponent=queues,routing-type=\"anycast\",queue=\"<queue_name>\"",
+    "operation": "removeMessages(java.lang.String)",
+    "arguments": ["AMQTimestamp<1730731343001"]
+}'
 
 # Delete Queue
 ```
