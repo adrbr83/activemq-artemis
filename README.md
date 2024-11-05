@@ -50,13 +50,20 @@ curl -u "user:password" -X POST "https://<host>:<port>/console/jolokia/exec" -H 
 
 # List Queues
 ```
-curl -s -H "Origin:http://localhost" -u "user:password" "https://<host>:<port>/console/jolokia/read/org.apache.activemq.artemis:broker=%22<broker-name>%22/QueueNames"
+curl -s -u "user:password" "https://<host>:<port>/console/jolokia/read/org.apache.activemq.artemis:broker=%22<broker-name>%22/QueueNames"
 
 ```
 
 # Count Messages
 ```
-curl -s -H "Origin:http://localhost" -u "user:password" "https://<host>:<port>/console/jolokia/read/org.apache.activemq.artemis:broker=\"<broker-name>\",component=addresses,address=\"<address-name>\",subcomponent=queues,routing-type=\"unycast\",queue=\"queue-name\"/MessageCount" | jq .
+curl -u "user:password" -X POST "https://<host>:<port>/console/jolokia/exec" -H "Content-Type: application/json" -d '{
+    "type": "EXEC",
+    "mbean": "org.apache.activemq.artemis:broker=\"<broker-name>\",component=addresses,address=\"<adress_name>\",subcomponent=queues,routing-type=\"anycast\",queue=\"<queue_name>\"",
+    "operation": "countMessages(java.lang.String)",
+    "arguments": [
+        "" // filter
+    ]
+}' 
 ```
 
 # Remove / Delete Messages
