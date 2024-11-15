@@ -89,3 +89,24 @@ curl -u "user:password" -X POST "https://<host>:<port>/console/jolokia/exec" -H 
     ]
 }'
 ```
+
+# Send a message
+```
+curl -X POST \
+  -u "user:password" \
+  "https://<host>:<port>/console/jolokia/exec" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "type": "EXEC",
+    "mbean": "org.apache.activemq.artemis:broker=\"<broker-name>\",component=addresses,address=\"<adress_name>\",subcomponent=queues,routing-type=\"anycast\",queue=\"<queue_name>\"",
+    "operation": "sendMessage(java.util.Map,int,java.lang.String,boolean,java.lang.String,java.lang.String)",
+    "arguments": [
+      {"header" : "test"},                  
+      0,                   
+      "VGVzdCBNZXNzYWdlIEJvZHkK", // base64
+      true,               
+      "user",            
+      "pass"       
+    ]
+  }'
+```
